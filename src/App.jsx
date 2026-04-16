@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import CoinCard from "./component/CoinCard";
 
 const API_URL =
   "/api/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false";
@@ -26,17 +27,23 @@ const App = () => {
     fetchCoins();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
-
   return (
     <div>
       <h1>🚀 Crypto Dash</h1>
-      {coins.map((coin) => (
-        <p key={coin.id}>
-          <img src={coin.image} alt="" width={15} /> {coin.name} - ${coin.current_price}
-        </p>
-      ))}
+      {loading && <p>Loading...</p>}
+      {error && (
+        <div className="error">
+          <p>❌ {error}</p>
+        </div>
+      )}
+
+      {!loading && !error && (
+        <main className="grid">
+          {coins.map((coin) => (
+            <CoinCard coin={coin} key={coin.id} />
+          ))}
+        </main>
+      )}
     </div>
   );
 };
