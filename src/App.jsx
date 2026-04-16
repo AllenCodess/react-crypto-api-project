@@ -9,23 +9,21 @@ const App = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(API_URL)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("data received:", data);
+    const fetchCoins = async () => {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Failed to fetch data");
+        const data = await response.json();
         setCoins(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("fetch error:", err);
+        console.log(data);
+      } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchCoins();
   }, []);
 
   if (loading) return <p>Loading...</p>;
@@ -36,7 +34,7 @@ const App = () => {
       <h1>🚀 Crypto Dash</h1>
       {coins.map((coin) => (
         <p key={coin.id}>
-          {coin.name} - ${coin.current_price}
+          <img src={coin.image} alt="" width={15} /> {coin.name} - ${coin.current_price}
         </p>
       ))}
     </div>
