@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import CoinCard from "./component/CoinCard";
 
-const API_URL =
-  "/api/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const App = () => {
   const [coins, setCoins] = useState([]);
@@ -12,7 +11,9 @@ const App = () => {
   useEffect(() => {
     const fetchCoins = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(
+          `${API_URL}&order=market_cap_desc&per_page=10&page=1&sparkline=false`,
+        );
         if (!response.ok) throw new Error("Failed to fetch data");
         const data = await response.json();
         setCoins(data);
