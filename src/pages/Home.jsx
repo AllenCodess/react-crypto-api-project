@@ -21,8 +21,8 @@ const HomePage = ({
         coin.name.toLowerCase().includes(filter.toLowerCase()) ||
         coin.symbol.toLowerCase().includes(filter.toLowerCase()),
     )
-    .slice()
-    .sort((a, b) => {
+
+    .toSorted((a, b) => {
       switch (sortBy) {
         case "market_cap_desc":
           return b.market_cap - a.market_cap;
